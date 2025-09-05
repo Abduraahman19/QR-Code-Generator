@@ -6,6 +6,7 @@ import * as htmlToImage from 'html-to-image';
 import CustomQRCode from '../common/CustomQRCode';
 import QRCodeDetailsModal from './QRCodeDetailsModal';
 import EmptyState from '../common/EmptyState';
+import QRAnalytics from '../common/QRAnalytics';
 
 const MyQRCodes = () => {
     const { qrCodes, deleteQRCode, updateQRCode } = useQR();
@@ -17,6 +18,7 @@ const MyQRCodes = () => {
     const [sortOption, setSortOption] = useState('newest');
     const [filterOption, setFilterOption] = useState('all');
     const [copiedId, setCopiedId] = useState(null);
+    const [showAnalytics, setShowAnalytics] = useState(false);
 
     const filteredQRCodes = qrCodes
         .filter(qr => {
@@ -156,18 +158,36 @@ const MyQRCodes = () => {
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Filter:</label>
+                    <label className="text-sm font-medium text-secondary-700 dark:text-secondary-300">Filter:</label>
                     <select
                         value={filterOption}
                         onChange={(e) => setFilterOption(e.target.value)}
-                        className="text-sm p-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg"
+                        className="text-sm p-2 border border-secondary-300 dark:border-secondary-700 dark:bg-secondary-800 dark:text-white rounded-lg"
                     >
                         <option value="all">All QR Codes</option>
                         <option value="withLogo">With Logo</option>
                         <option value="withoutLogo">Without Logo</option>
                     </select>
+                    <button
+                        onClick={() => setShowAnalytics(!showAnalytics)}
+                        className={`btn-secondary text-sm px-4 py-2 ${showAnalytics ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300' : ''}`}
+                    >
+                        {showAnalytics ? 'Hide Analytics' : 'Show Analytics'}
+                    </button>
                 </div>
             </div>
+
+            {/* Analytics Section */}
+            {showAnalytics && qrCodes.length > 0 && (
+                <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mb-8"
+                >
+                    <QRAnalytics qrCode={qrCodes[0]} />
+                </motion.div>
+            )}
 
             {filteredQRCodes.length === 0 ? (
                 <EmptyState

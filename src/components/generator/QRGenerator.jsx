@@ -7,6 +7,7 @@ import CustomQRCode from '../common/CustomQRCode';
 import ColorPicker from '../common/ColorPicker';
 import PatternPicker from '../common/PatternPicker';
 import LogoUpload from '../common/LogoUpload';
+import QRTemplates from '../common/QRTemplates';
 
 const QRGenerator = () => {
     const [inputText, setInputText] = useState('');
@@ -230,6 +231,12 @@ const QRGenerator = () => {
                         >
                             Logo
                         </button>
+                        <button
+                            onClick={() => setActiveTab('templates')}
+                            className={`px-6 py-3 font-semibold rounded-t-xl transition-all duration-200 ${activeTab === 'templates' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 border-b-2 border-primary-500' : 'text-secondary-500 dark:text-secondary-400 hover:text-secondary-700 dark:hover:text-secondary-300'}`}
+                        >
+                            Templates
+                        </button>
                     </div>
 
                     <AnimatePresence mode="wait">
@@ -277,16 +284,29 @@ const QRGenerator = () => {
 
                             {activeTab === 'design' && (
                                 <div className="space-y-4">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {/* <ColorPicker
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <ColorPicker
                                             label="Foreground Color"
                                             color={qrOptions.fgColor}
                                             onChange={(color) => handleColorChange('fgColor', color)}
-                                        /> */}
+                                        />
                                         <ColorPicker
                                             label="Background Color"
                                             color={qrOptions.bgColor}
                                             onChange={(color) => handleColorChange('bgColor', color)}
+                                        />
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <ColorPicker
+                                            label="Eye Color"
+                                            color={qrOptions.eyeColor}
+                                            onChange={(color) => handleColorChange('eyeColor', color)}
+                                        />
+                                        <ColorPicker
+                                            label="Eye Ball Color"
+                                            color={qrOptions.eyeBallColor}
+                                            onChange={(color) => handleColorChange('eyeBallColor', color)}
                                         />
                                     </div>
 
@@ -336,7 +356,8 @@ const QRGenerator = () => {
                                                         { value: 'square', label: 'Square' },
                                                         { value: 'dots', label: 'Dots' },
                                                         { value: 'rounded', label: 'Rounded' },
-                                                        { value: 'extra-rounded', label: 'Extra Rounded' }
+                                                        { value: 'extra-rounded', label: 'Extra Rounded' },
+                                                        { value: 'classy', label: 'Classy' }
                                                     ]}
                                                 />
                                             </div>
@@ -351,7 +372,8 @@ const QRGenerator = () => {
                                                     patterns={[
                                                         { value: 'square', label: 'Square' },
                                                         { value: 'dot', label: 'Dot' },
-                                                        { value: 'rounded', label: 'Rounded' }
+                                                        { value: 'rounded', label: 'Rounded' },
+                                                        { value: 'extra-rounded', label: 'Extra Rounded' }
                                                     ]}
                                                 />
                                             </div>
@@ -405,7 +427,7 @@ const QRGenerator = () => {
 
                                     {logo && (
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                            <label className="block text-sm font-semibold text-secondary-700 dark:text-secondary-300 mb-2">
                                                 Logo Size
                                             </label>
                                             <input
@@ -414,16 +436,28 @@ const QRGenerator = () => {
                                                 max="50"
                                                 value={logoSize}
                                                 onChange={(e) => setLogoSize(parseInt(e.target.value))}
-                                                className="w-full"
+                                                className="w-full accent-primary-600"
                                             />
-                                            <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                                            <div className="flex justify-between text-xs text-secondary-500 dark:text-secondary-400 mt-1">
                                                 <span>Small</span>
-                                                <span>{logoSize}%</span>
+                                                <span className="font-medium">{logoSize}%</span>
                                                 <span>Large</span>
                                             </div>
                                         </div>
                                     )}
                                 </div>
+                            )}
+
+                            {activeTab === 'templates' && (
+                                <QRTemplates
+                                    onApplyTemplate={(templateOptions) => {
+                                        setQrOptions(prev => ({
+                                            ...prev,
+                                            ...templateOptions
+                                        }));
+                                    }}
+                                    currentOptions={qrOptions}
+                                />
                             )}
                         </motion.div>
                     </AnimatePresence>

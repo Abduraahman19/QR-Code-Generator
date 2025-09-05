@@ -7,6 +7,8 @@ export default function Navbar() {
     
     const navItems = [
         { path: '/create', name: 'Create' },
+        { path: '/bulk', name: 'Bulk Generate' },
+        { path: '/scanner', name: 'Scanner' },
         { path: '/my-qr-codes', name: 'My QR Codes' }
     ]
 

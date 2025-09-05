@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { QRProvider } from './context/QRContext'
 import QRGenerator from './components/generator/QRGenerator'
+import BulkQRGenerator from './components/generator/BulkQRGenerator'
+import QRScanner from './components/scanner/QRScanner'
 import MyQRCodes from './components/qrcodes/MyQRCodes'
 import Navbar from './components/home/Navbar'
 import Home from './components/home/Home'
@@ -17,6 +19,8 @@ function AppRoutes() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/create" element={<QRGenerator />} />
+          <Route path="/bulk" element={<BulkQRGenerator />} />
+          <Route path="/scanner" element={<QRScanner />} />
           <Route path="/my-qr-codes" element={<MyQRCodes />} />
         </Routes>
       </main>
