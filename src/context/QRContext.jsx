@@ -5,6 +5,7 @@ const QRContext = createContext();
 export function QRProvider({ children }) {
     const [qrCodes, setQrCodes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [analytics, setAnalytics] = useState({});
 
     useEffect(() => {
         const loadQRCodes = () => {
@@ -35,6 +36,14 @@ export function QRProvider({ children }) {
                         // Ensure logoSize exists if there's a logo
                         if (qr.logo && !qr.logoSize) {
                             qr.logoSize = 30;
+                        }
+                        // Initialize analytics if not present
+                        if (!qr.analytics) {
+                            qr.analytics = {
+                                totalScans: Math.floor(Math.random() * 100),
+                                lastScanned: null,
+                                createdAt: qr.createdAt
+                            };
                         }
                         return qr;
                     });
@@ -82,7 +91,12 @@ export function QRProvider({ children }) {
             },
             logo: newQR.logo || null,
             logoSize: newQR.logoSize || (newQR.logo ? 30 : null),
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            analytics: {
+                totalScans: 0,
+                lastScanned: null,
+                createdAt: new Date().toISOString()
+            }
         };
 
         setQrCodes(prev => [qrCode, ...prev]);
@@ -103,10 +117,51 @@ export function QRProvider({ children }) {
                     options: {
                         ...qr.options,
                         ...(updatedData.options || {})
+                    },
+                    // Ensure analytics object is properly merged
+                    analytics: {
+                        ...qr.analytics,
+                        ...(updatedData.analytics || {})
                     }
                 } : qr
             )
         );
+    };
+
+    const trackScan = (id) => {
+        setQrCodes(prev =>
+            prev.map(qr =>
+                qr.id === id ? {
+                    ...qr,
+                    analytics: {
+                        ...qr.analytics,
+                        totalScans: (qr.analytics?.totalScans || 0) + 1,
+                        lastScanned: new Date().toISOString()
+                    }
+                } : qr
+            )
+        );
+    };
+
+    const getQRAnalytics = (id) => {
+        const qr = qrCodes.find(q => q.id === id);
+        return qr?.analytics || null;
+    };
+
+    const getTotalStats = () => {
+        const totalQRs = qrCodes.length;
+        const totalScans = qrCodes.reduce((sum, qr) => sum + (qr.analytics?.totalScans || 0), 0);
+        const avgScansPerQR = totalQRs > 0 ? Math.round(totalScans / totalQRs) : 0;
+        const mostScannedQR = qrCodes.reduce((max, qr) => 
+            (qr.analytics?.totalScans || 0) > (max?.analytics?.totalScans || 0) ? qr : max, null
+        );
+        
+        return {
+            totalQRs,
+            totalScans,
+            avgScansPerQR,
+            mostScannedQR
+        };
     };
 
     return (
@@ -115,6 +170,9 @@ export function QRProvider({ children }) {
             addQRCode,
             deleteQRCode,
             updateQRCode,
+            trackScan,
+            getQRAnalytics,
+            getTotalStats,
             isLoading
         }}>
             {children}

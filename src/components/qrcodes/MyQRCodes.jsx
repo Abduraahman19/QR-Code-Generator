@@ -109,27 +109,27 @@ const MyQRCodes = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="max-w-7xl mx-auto p-6"
+            className="p-6 mx-auto max-w-7xl"
         >
             {/* Header and filter sections remain the same */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+            <div className="flex flex-col items-start justify-between gap-4 mb-6 md:flex-row md:items-center">
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-accent-500 rounded-lg flex items-center justify-center">
-                            <span className="text-white font-bold text-sm">QR</span>
+                        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-500">
+                            <span className="text-sm font-bold text-white">QR</span>
                         </div>
                         <h2 className="text-3xl font-bold text-secondary-800 dark:text-white">
                             My <span className="gradient-text">QR Codes</span>
                         </h2>
                     </div>
-                    <span className="bg-gradient-to-r from-primary-100 to-accent-100 dark:from-primary-900/30 dark:to-accent-900/30 text-primary-800 dark:text-primary-200 text-sm font-semibold px-4 py-2 rounded-full border border-primary-200 dark:border-primary-700">
+                    <span className="px-4 py-2 text-sm font-semibold border rounded-full bg-gradient-to-r from-primary-100 to-accent-100 dark:from-primary-900/30 dark:to-accent-900/30 text-primary-800 dark:text-primary-200 border-primary-200 dark:border-primary-700">
                         {qrCodes.length} {qrCodes.length === 1 ? 'QRcode' : 'QRcodes'}
                     </span>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                <div className="flex flex-col w-full gap-3 sm:flex-row md:w-auto">
                     <div className="relative flex-1 md:w-64">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <FiSearch className="text-gray-400" />
                         </div>
                         <input
@@ -137,19 +137,19 @@ const MyQRCodes = () => {
                             placeholder="Search QR codes..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="pl-10 w-full p-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-2 pl-10 border border-gray-300 rounded-lg dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                 </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+            <div className="flex flex-col items-start justify-between gap-4 mb-6 sm:flex-row sm:items-center">
                 <div className="flex items-center gap-3">
                     <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Sort by:</label>
                     <select
                         value={sortOption}
                         onChange={(e) => setSortOption(e.target.value)}
-                        className="text-sm p-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg"
+                        className="p-2 text-sm border border-gray-300 rounded-lg dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                     >
                         <option value="newest">Newest First</option>
                         <option value="oldest">Oldest First</option>
@@ -162,7 +162,7 @@ const MyQRCodes = () => {
                     <select
                         value={filterOption}
                         onChange={(e) => setFilterOption(e.target.value)}
-                        className="text-sm p-2 border border-secondary-300 dark:border-secondary-700 dark:bg-secondary-800 dark:text-white rounded-lg"
+                        className="p-2 text-sm border rounded-lg border-secondary-300 dark:border-secondary-700 dark:bg-secondary-800 dark:text-white"
                     >
                         <option value="all">All QR Codes</option>
                         <option value="withLogo">With Logo</option>
@@ -196,7 +196,7 @@ const MyQRCodes = () => {
                     totalQRCodes={qrCodes.length}
                 />
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     <AnimatePresence>
                         {filteredQRCodes.map((qr) => (
                             <motion.div
@@ -206,12 +206,12 @@ const MyQRCodes = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.9 }}
                                 transition={{ duration: 0.3 }}
-                                className="card card-hover p-6 group transition-all duration-300"
+                                className="p-6 transition-all duration-300 card card-hover group"
                             >
                                 <div className="relative group">
                                     <div
                                         id={`qr-${qr.id}`}
-                                        className="flex justify-center mb-3 p-4 rounded-lg"
+                                        className="flex justify-center p-4 mb-3 rounded-lg"
                                         style={{
                                             backgroundColor: qr.options?.bgColor || '#ffffff',
                                             width: '100%',
@@ -244,10 +244,10 @@ const MyQRCodes = () => {
                                         </div>
                                     </div>
 
-                                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+                                    <div className="absolute inset-0 flex items-center justify-center transition-opacity bg-black bg-opacity-50 rounded-lg opacity-0 group-hover:opacity-100">
                                         <button
                                             onClick={() => openDetailsModal(qr)}
-                                            className="p-2 bg-white text-gray-800 rounded-full hover:bg-gray-100 transition-colors"
+                                            className="p-2 text-gray-800 transition-colors bg-white rounded-full hover:bg-gray-100"
                                             title="View Details"
                                         >
                                             <FiEye size={18} />
@@ -255,16 +255,16 @@ const MyQRCodes = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex justify-between items-start mb-2">
+                                <div className="flex items-start justify-between mb-2">
                                     <h3
-                                        className="font-medium text-center flex-1 truncate px-2 dark:text-white"
+                                        className="flex-1 px-2 font-medium text-center truncate dark:text-white"
                                         title={qr.name}
                                     >
                                         {qr.name}
                                     </h3>
                                 </div>
 
-                                <div className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400 mb-3">
+                                <div className="flex items-center justify-between mb-3 text-xs text-gray-500 dark:text-gray-400">
                                     <span>
                                         {new Date(qr.createdAt).toLocaleDateString('en-US', {
                                             year: 'numeric',
@@ -274,17 +274,17 @@ const MyQRCodes = () => {
                                     </span>
                                     <span className="flex items-center">
                                         {qr.logo && (
-                                            <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                                            <span className="inline-block w-2 h-2 mr-1 bg-green-500 rounded-full"></span>
                                         )}
                                         {qr.logo ? 'With Logo' : 'No Logo'}
                                     </span>
                                 </div>
 
-                                <div className="flex justify-between items-center">
+                                <div className="flex items-center justify-between">
                                     <select
                                         value={selectedFormat}
                                         onChange={(e) => setSelectedFormat(e.target.value)}
-                                        className="text-xs p-1 border border-gray-300 dark:border-gray-700 dark:bg-gray-700 dark:text-white rounded"
+                                        className="p-1 text-xs border border-gray-300 rounded dark:border-gray-700 dark:bg-gray-700 dark:text-white"
                                         disabled={isDownloading}
                                     >
                                         <option value="png">PNG</option>
@@ -302,7 +302,7 @@ const MyQRCodes = () => {
                                         >
                                             <FiCopy size={16} />
                                             {copiedId === qr.id && (
-                                                <span className="absolute -mt-8 -ml-2 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                                                <span className="absolute px-2 py-1 -mt-8 -ml-2 text-xs text-white bg-gray-800 rounded">
                                                     Copied!
                                                 </span>
                                             )}

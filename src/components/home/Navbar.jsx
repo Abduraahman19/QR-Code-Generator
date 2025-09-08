@@ -9,7 +9,8 @@ export default function Navbar() {
         { path: '/create', name: 'Create' },
         { path: '/bulk', name: 'Bulk Generate' },
         { path: '/scanner', name: 'Scanner' },
-        { path: '/my-qr-codes', name: 'My QR Codes' }
+        { path: '/my-qr-codes', name: 'My QR Codes' },
+        { path: '/analytics', name: 'Analytics' }
     ]
 
     return (

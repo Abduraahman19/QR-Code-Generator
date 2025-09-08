@@ -4,6 +4,7 @@ import QRGenerator from './components/generator/QRGenerator'
 import BulkQRGenerator from './components/generator/BulkQRGenerator'
 import QRScanner from './components/scanner/QRScanner'
 import MyQRCodes from './components/qrcodes/MyQRCodes'
+import Analytics from './components/analytics/Analytics'
 import Navbar from './components/home/Navbar'
 import Home from './components/home/Home'
 import Footer from './components/common/Footer'
@@ -22,6 +23,7 @@ function AppRoutes() {
           <Route path="/bulk" element={<BulkQRGenerator />} />
           <Route path="/scanner" element={<QRScanner />} />
           <Route path="/my-qr-codes" element={<MyQRCodes />} />
+          <Route path="/analytics" element={<Analytics />} />
         </Routes>
       </main>
       <Footer />
