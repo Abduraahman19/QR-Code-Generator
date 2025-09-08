@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FiUpload, FiDownload, FiTrash2, FiPlus, FiX } from 'react-icons/fi'
+import { FiUpload, FiDownload, FiTrash2, FiPlus, FiX, FiFileText, FiCheckCircle, FiAlertCircle, FiCopy, FiEye } from 'react-icons/fi'
 import { useQR } from '../../context/QRContext'
 import CustomQRCode from '../common/CustomQRCode'
 
@@ -10,6 +10,9 @@ export default function BulkQRGenerator() {
     ])
     const [isGenerating, setIsGenerating] = useState(false)
     const [generatedQRs, setGeneratedQRs] = useState([])
+    const [successMessage, setSuccessMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
+    const [previewQR, setPreviewQR] = useState(null)
     const { addQRCode } = useQR()
 
     const [bulkOptions] = useState({
@@ -24,10 +27,10 @@ export default function BulkQRGenerator() {
     })
 
     const addRow = () => {
-        setBulkData(prev => [...prev, { 
-            id: Date.now(), 
-            text: '', 
-            name: '' 
+        setBulkData(prev => [...prev, {
+            id: Date.now(),
+            text: '',
+            name: ''
         }])
     }
 
@@ -36,7 +39,7 @@ export default function BulkQRGenerator() {
     }
 
     const updateRow = (id, field, value) => {
-        setBulkData(prev => prev.map(item => 
+        setBulkData(prev => prev.map(item =>
             item.id === id ? { ...item, [field]: value } : item
         ))
     }
@@ -72,16 +75,16 @@ export default function BulkQRGenerator() {
         }
 
         setIsGenerating(true)
-        
+
         // Simulate generation delay
         await new Promise(resolve => setTimeout(resolve, 1000))
-        
+
         const generated = validData.map(item => ({
             ...item,
             options: bulkOptions,
             createdAt: new Date().toISOString()
         }))
-        
+
         setGeneratedQRs(generated)
         setIsGenerating(false)
     }
@@ -103,26 +106,51 @@ export default function BulkQRGenerator() {
     }
 
     return (
-        <div className="max-w-6xl mx-auto p-8">
-            <div className="mb-8">
-                <h2 className="text-3xl font-bold text-secondary-800 dark:text-white mb-2">
-                    Bulk QR Generator
+        <div className="p-4 mx-auto max-w-7xl md:p-8">
+            <div className="mb-8 text-center">
+                <h2 className="mb-3 text-4xl font-bold text-transparent bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text">
+                    Professional Bulk QR Generator
                 </h2>
-                <p className="text-secondary-600 dark:text-secondary-400">
-                    Generate multiple QR codes at once for efficiency
+                <p className="text-lg text-secondary-600 dark:text-secondary-400">
+                    Generate multiple QR codes efficiently with batch processing
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <AnimatePresence>
+                {successMessage && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="flex items-center p-4 mb-6 border border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-800 rounded-xl"
+                    >
+                        <FiCheckCircle className="mr-3 text-green-500" size={20} />
+                        <span className="text-green-700 dark:text-green-300">{successMessage}</span>
+                    </motion.div>
+                )}
+                {errorMessage && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="flex items-center p-4 mb-6 border border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-800 rounded-xl"
+                    >
+                        <FiAlertCircle className="mr-3 text-red-500" size={20} />
+                        <span className="text-red-700 dark:text-red-300">{errorMessage}</span>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
                 {/* Input Section */}
                 <div className="space-y-6">
-                    <div className="card p-6">
-                        <div className="flex justify-between items-center mb-4">
+                    <div className="p-6 card">
+                        <div className="flex items-center justify-between mb-4">
                             <h3 className="text-lg font-semibold text-secondary-800 dark:text-white">
                                 QR Code Data
                             </h3>
-                            <div className="flex gap-2">
-                                <label className="btn-secondary text-sm px-4 py-2 cursor-pointer">
+                            <div className="flex items-center gap-2">
+                                <label className="flex items-center px-4 py-2 text-sm cursor-pointer btn-secondary">
                                     <FiUpload className="mr-2" size={16} />
                                     Import CSV
                                     <input
@@ -134,15 +162,16 @@ export default function BulkQRGenerator() {
                                 </label>
                                 <button
                                     onClick={addRow}
-                                    className="btn-primary text-sm px-4 py-2"
+                                    className="flex items-center px-4 py-2 text-sm btn-primary"
                                 >
                                     <FiPlus className="mr-2" size={16} />
                                     Add Row
                                 </button>
                             </div>
+
                         </div>
 
-                        <div className="space-y-3 max-h-96 overflow-y-auto">
+                        <div className="space-y-3 overflow-y-auto max-h-96">
                             <AnimatePresence>
                                 {bulkData.map((item, index) => (
                                     <motion.div
@@ -150,7 +179,7 @@ export default function BulkQRGenerator() {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, x: -100 }}
-                                        className="grid grid-cols-12 gap-2 items-center"
+                                        className="grid items-center grid-cols-12 gap-2"
                                     >
                                         <div className="col-span-1 text-sm font-medium text-secondary-600 dark:text-secondary-400">
                                             {index + 1}
@@ -160,18 +189,18 @@ export default function BulkQRGenerator() {
                                             placeholder="QR Name"
                                             value={item.name}
                                             onChange={(e) => updateRow(item.id, 'name', e.target.value)}
-                                            className="col-span-4 input-field text-sm py-2"
+                                            className="col-span-4 py-2 text-sm input-field"
                                         />
                                         <input
                                             type="text"
                                             placeholder="URL or Text"
                                             value={item.text}
                                             onChange={(e) => updateRow(item.id, 'text', e.target.value)}
-                                            className="col-span-6 input-field text-sm py-2"
+                                            className="col-span-6 py-2 text-sm input-field"
                                         />
                                         <button
                                             onClick={() => removeRow(item.id)}
-                                            className="col-span-1 p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                                            className="col-span-1 p-2 text-red-500 transition-colors rounded-lg hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
                                             disabled={bulkData.length === 1}
                                         >
                                             <FiX size={16} />
@@ -181,15 +210,15 @@ export default function BulkQRGenerator() {
                             </AnimatePresence>
                         </div>
 
-                        <div className="mt-6 pt-4 border-t border-secondary-200 dark:border-secondary-700">
+                        <div className="pt-4 mt-6 border-t border-secondary-200 dark:border-secondary-700">
                             <button
                                 onClick={generateBulkQRs}
                                 disabled={isGenerating}
-                                className="w-full btn-primary py-3 disabled:opacity-50"
+                                className="w-full py-3 btn-primary disabled:opacity-50"
                             >
                                 {isGenerating ? (
                                     <>
-                                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                                        <div className="w-5 h-5 mr-2 border-2 border-white rounded-full border-t-transparent animate-spin" />
                                         Generating...
                                     </>
                                 ) : (
@@ -200,16 +229,16 @@ export default function BulkQRGenerator() {
                     </div>
 
                     {/* CSV Format Help */}
-                    <div className="card p-4">
-                        <h4 className="font-semibold text-secondary-800 dark:text-white mb-2">
+                    <div className="p-4 card">
+                        <h4 className="mb-2 font-semibold text-secondary-800 dark:text-white">
                             CSV Format
                         </h4>
-                        <p className="text-sm text-secondary-600 dark:text-secondary-400 mb-2">
+                        <p className="mb-2 text-sm text-secondary-600 dark:text-secondary-400">
                             Upload a CSV file with the following format:
                         </p>
-                        <code className="text-xs bg-secondary-100 dark:bg-secondary-700 p-2 rounded block">
-                            Name,URL<br/>
-                            Website,https://example.com<br/>
+                        <code className="block p-2 text-xs rounded dark:text-white bg-secondary-100 dark:bg-secondary-700">
+                            Name,URL<br />
+                            Website,https://example.com<br />
                             Contact,tel:+1234567890
                         </code>
                     </div>
@@ -217,8 +246,8 @@ export default function BulkQRGenerator() {
 
                 {/* Results Section */}
                 <div className="space-y-6">
-                    <div className="card p-6">
-                        <div className="flex justify-between items-center mb-4">
+                    <div className="p-6 card">
+                        <div className="flex items-center justify-between mb-4">
                             <h3 className="text-lg font-semibold text-secondary-800 dark:text-white">
                                 Generated QR Codes ({generatedQRs.length})
                             </h3>
@@ -226,13 +255,13 @@ export default function BulkQRGenerator() {
                                 <div className="flex gap-2">
                                     <button
                                         onClick={saveAllQRs}
-                                        className="btn-secondary text-sm px-4 py-2"
+                                        className="px-4 py-2 text-sm btn-secondary"
                                     >
                                         Save All
                                     </button>
                                     <button
                                         onClick={downloadAllQRs}
-                                        className="btn-primary text-sm px-4 py-2"
+                                        className="px-4 py-2 text-sm btn-primary"
                                     >
                                         <FiDownload className="mr-2" size={16} />
                                         Download All
@@ -242,14 +271,14 @@ export default function BulkQRGenerator() {
                         </div>
 
                         {generatedQRs.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
+                            <div className="grid grid-cols-1 gap-4 overflow-y-auto md:grid-cols-2 max-h-96">
                                 {generatedQRs.map((qr, index) => (
                                     <motion.div
                                         key={qr.id}
                                         initial={{ opacity: 0, scale: 0.8 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         transition={{ delay: index * 0.1 }}
-                                        className="card p-4 text-center"
+                                        className="p-4 text-center card"
                                     >
                                         <div className="mb-3">
                                             <CustomQRCode
@@ -263,18 +292,18 @@ export default function BulkQRGenerator() {
                                                 eyeBallColor={qr.options.eyeBallColor}
                                             />
                                         </div>
-                                        <h4 className="font-medium text-secondary-800 dark:text-white text-sm mb-1">
+                                        <h4 className="mb-1 text-sm font-medium text-secondary-800 dark:text-white">
                                             {qr.name}
                                         </h4>
-                                        <p className="text-xs text-secondary-600 dark:text-secondary-400 truncate">
+                                        <p className="text-xs truncate text-secondary-600 dark:text-secondary-400">
                                             {qr.text}
                                         </p>
                                     </motion.div>
                                 ))}
                             </div>
                         ) : (
-                            <div className="text-center py-12">
-                                <div className="w-16 h-16 bg-secondary-100 dark:bg-secondary-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <div className="py-12 text-center">
+                                <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-secondary-100 dark:bg-secondary-700">
                                     <FiDownload className="text-secondary-400" size={24} />
                                 </div>
                                 <p className="text-secondary-600 dark:text-secondary-400">
