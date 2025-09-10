@@ -318,7 +318,7 @@ export default function QRScanner() {
     }, [error])
 
     return (
-        <div className="max-w-6xl p-4 mx-auto md:p-8">
+        <div className="p-4 mx-auto max-w-7xl md:p-8">
             <div className="mb-8 text-center">
                 <h2 className="mb-3 text-4xl font-bold text-transparent bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text">
                     Professional QR Scanner

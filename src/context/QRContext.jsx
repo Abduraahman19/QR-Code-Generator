@@ -1,5 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
+// Unique ID generator
+const generateUniqueId = () => {
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substr(2, 9);
+    const counter = Math.floor(Math.random() * 10000);
+    return `qr-${timestamp}-${random}-${counter}`;
+};
+
 const QRContext = createContext();
 
 export function QRProvider({ children }) {
@@ -15,9 +23,13 @@ export function QRProvider({ children }) {
                     const parsed = JSON.parse(saved);
                     
                     // Validate and migrate data
+                    const seenIds = new Set();
                     const validated = parsed.map(qr => {
-                        // Ensure required fields exist
-                        if (!qr.id) qr.id = Date.now().toString();
+                        // Ensure required fields exist and unique IDs
+                        if (!qr.id || seenIds.has(qr.id)) {
+                            qr.id = generateUniqueId();
+                        }
+                        seenIds.add(qr.id);
                         if (!qr.createdAt) qr.createdAt = new Date().toISOString();
                         if (!qr.options) {
                             qr.options = {
@@ -74,7 +86,7 @@ export function QRProvider({ children }) {
 
     const addQRCode = (newQR) => {
         const qrCode = {
-            id: Date.now().toString(),
+            id: generateUniqueId(),
             value: newQR.value,
             name: newQR.name || `QR-${Date.now()}`,
             options: {

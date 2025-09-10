@@ -11,7 +11,7 @@ export default function Analytics() {
 
     const exportToCSV = () => {
         if (!analytics) return
-        
+
         const csvData = [
             ['Metric', 'Value'],
             ['Total QR Codes', analytics.overview.totalQRCodes],
@@ -29,7 +29,7 @@ export default function Analytics() {
             ['Locations', ''],
             ...analytics.locations.map(loc => [loc.country, `${loc.scans} (${loc.percentage}%)`])
         ]
-        
+
         const csvContent = csvData.map(row => row.join(',')).join('\n')
         const blob = new Blob([csvContent], { type: 'text/csv' })
         const url = window.URL.createObjectURL(blob)
@@ -49,7 +49,7 @@ export default function Analytics() {
             const totalQRs = qrCodes.length
             const totalScans = qrCodes.reduce((sum, qr) => sum + (qr.analytics?.totalScans || 0), 0)
             const todayScans = Math.floor(totalScans * 0.15) + Math.floor(Math.random() * 10)
-            
+
             return {
                 overview: {
                     totalQRCodes: totalQRs,
@@ -106,7 +106,7 @@ export default function Analytics() {
                 <div className="space-y-6 animate-pulse">
                     <div className="w-64 h-8 rounded bg-secondary-200 dark:bg-secondary-700"></div>
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
-                        {[1,2,3,4].map(i => (
+                        {[1, 2, 3, 4].map(i => (
                             <div key={i} className="h-32 bg-secondary-200 dark:bg-secondary-700 rounded-xl"></div>
                         ))}
                     </div>
@@ -118,7 +118,8 @@ export default function Analytics() {
     const maxDayScans = Math.max(...analytics.scansByDay.map(d => d.scans))
 
     return (
-        <div className="p-6 mx-auto max-w-7xl">
+        <div className="py-8 container-responsive">
+        <div className="mx-auto max-w-7xl">
             <div className="mb-8">
                 <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
@@ -140,21 +141,23 @@ export default function Analytics() {
                             <option value="90d">Last 90 Days</option>
                         </select>
                         <div className="flex gap-2">
-                            <button 
+                            <button
                                 onClick={exportToCSV}
-                                className="flex px-4 py-2 text-sm btn-secondary"
+                                className="flex items-center gap-2 px-4 py-2 text-sm btn-secondary"
                             >
-                                <FiDownload className="mr-2" size={16} />
+                                <FiDownload size={18} />
                                 Export CSV
                             </button>
-                            <button 
+
+                            <button
                                 onClick={viewDetailedReport}
-                                className="flex px-4 py-2 text-sm btn-primary"
+                                className="flex items-center gap-2 px-4 py-2 text-sm btn-primary"
                             >
-                                <FiEye className="mr-2" size={16} />
+                                <FiEye size={18} />
                                 View Report
                             </button>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -415,25 +418,25 @@ export default function Analytics() {
 
             {/* Detailed Report Modal */}
             {showReport && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white dark:bg-secondary-800 rounded-xl shadow-2xl m-4"
+                        className="w-full max-w-[95vw] sm:max-w-4xl mt-20 max-h-[80vh] overflow-hidden bg-white dark:bg-secondary-800 rounded-2xl shadow-2xl border border-secondary-200 dark:border-secondary-700"
                     >
-                        <div className="sticky top-0 flex items-center justify-between p-6 border-b bg-white dark:bg-secondary-800 border-secondary-200 dark:border-secondary-700">
+                        <div className="sticky top-0 flex items-center justify-between p-6 bg-white border-b dark:bg-secondary-800 border-secondary-200 dark:border-secondary-700">
                             <h2 className="text-2xl font-bold text-secondary-800 dark:text-white">
                                 Detailed Analytics Report
                             </h2>
                             <button
                                 onClick={() => setShowReport(false)}
-                                className="p-2 rounded-lg hover:bg-secondary-100 dark:hover:bg-secondary-700"
+                                className="p-2 rounded-xl dark:text-white hover:bg-secondary-100 dark:hover:bg-secondary-700"
                             >
                                 ✕
                             </button>
                         </div>
-                        
-                        <div className="p-6 space-y-8">
+
+                        <div className="p-4 sm:p-6 space-y-6 sm:space-y-8 overflow-y-auto max-h-[calc(90vh-80px)]">
                             {/* Summary Section */}
                             <div>
                                 <h3 className="mb-4 text-lg font-semibold text-secondary-800 dark:text-white">Summary</h3>
@@ -507,9 +510,9 @@ export default function Analytics() {
                             <div className="flex justify-end gap-3 pt-4 border-t border-secondary-200 dark:border-secondary-700">
                                 <button
                                     onClick={exportToCSV}
-                                    className="flex items-center px-4 py-2 btn-secondary"
+                                    className="flex items-center gap-2 px-4 py-2 btn-secondary"
                                 >
-                                    <FiDownload className="mr-2" size={16} />
+                                    <FiDownload size={16} />
                                     Export CSV
                                 </button>
                                 <button
@@ -519,10 +522,12 @@ export default function Analytics() {
                                     Close
                                 </button>
                             </div>
+
                         </div>
                     </motion.div>
                 </div>
             )}
+        </div>
         </div>
     )
 }

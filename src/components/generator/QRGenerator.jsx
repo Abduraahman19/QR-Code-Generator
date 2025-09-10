@@ -194,15 +194,16 @@ const QRGenerator = () => {
     };
 
     return (
+        <div className="container-responsive py-8">
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="max-w-6xl mx-auto p-8 card shadow-xl"
+            className="p-6 xs:p-8 mx-auto shadow-xl max-w-7xl card"
         >
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
-                        <span className="text-white font-bold">QR</span>
+                    <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl">
+                        <span className="font-bold text-white">QR</span>
                     </div>
                     <h2 className="text-3xl font-bold text-secondary-800 dark:text-white">
                         QR Code <span className="gradient-text">Generator</span>
@@ -210,8 +211,8 @@ const QRGenerator = () => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 space-y-4">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                <div className="space-y-4 lg:col-span-2">
                     <div className="flex border-b dark:border-gray-700">
                         <button
                             onClick={() => setActiveTab('content')}
@@ -250,7 +251,7 @@ const QRGenerator = () => {
                             {activeTab === 'content' && (
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="block text-sm font-semibold text-secondary-700 dark:text-secondary-300 mb-2">
+                                        <label className="block mb-2 text-sm font-semibold text-secondary-700 dark:text-secondary-300">
                                             QR Code Content
                                         </label>
                                         <input
@@ -260,12 +261,12 @@ const QRGenerator = () => {
                                             placeholder="https://example.com or any text"
                                             className="input-field"
                                         />
-                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                                             Enter the URL or text you want to encode in the QR code
                                         </p>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-secondary-700 dark:text-secondary-300 mb-2">
+                                        <label className="block mb-2 text-sm font-semibold text-secondary-700 dark:text-secondary-300">
                                             QR Code Name (Optional)
                                         </label>
                                         <input
@@ -275,7 +276,7 @@ const QRGenerator = () => {
                                             placeholder="My QR Code"
                                             className="input-field"
                                         />
-                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                                             Give your QR code a name for easy identification
                                         </p>
                                     </div>
@@ -284,7 +285,7 @@ const QRGenerator = () => {
 
                             {activeTab === 'design' && (
                                 <div className="space-y-4">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                         <ColorPicker
                                             label="Foreground Color"
                                             color={qrOptions.fgColor}
@@ -297,7 +298,7 @@ const QRGenerator = () => {
                                         />
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                         <ColorPicker
                                             label="Eye Color"
                                             color={qrOptions.eyeColor}
@@ -310,7 +311,7 @@ const QRGenerator = () => {
                                         />
                                     </div>
 
-                                    {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {/* <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <ColorPicker
                                             label="Eye Color"
                                             color={qrOptions.eyeColor}
@@ -339,7 +340,7 @@ const QRGenerator = () => {
                                             className="space-y-4 overflow-hidden"
                                         >
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                                <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
                                                     Dot Style
                                                 </label>
                                                 <PatternPicker
@@ -363,7 +364,7 @@ const QRGenerator = () => {
                                             </div>
 
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                                <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
                                                     Corner Style
                                                 </label>
                                                 <PatternPicker
@@ -379,13 +380,13 @@ const QRGenerator = () => {
                                             </div>
 
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                                <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
                                                     Error Correction Level
                                                 </label>
                                                 <select
                                                     value={qrOptions.level}
                                                     onChange={(e) => handleColorChange('level', e.target.value)}
-                                                    className="w-full p-2 border dark:border-gray-700 dark:bg-gray-700 dark:text-white rounded-lg"
+                                                    className="w-full p-2 border rounded-lg dark:border-gray-700 dark:bg-gray-700 dark:text-white"
                                                 >
                                                     <option value="L">Low (7%)</option>
                                                     <option value="M">Medium (15%)</option>
@@ -395,7 +396,7 @@ const QRGenerator = () => {
                                             </div>
 
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                                <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
                                                     Margin Size
                                                 </label>
                                                 <input
@@ -427,7 +428,7 @@ const QRGenerator = () => {
 
                                     {logo && (
                                         <div>
-                                            <label className="block text-sm font-semibold text-secondary-700 dark:text-secondary-300 mb-2">
+                                            <label className="block mb-2 text-sm font-semibold text-secondary-700 dark:text-secondary-300">
                                                 Logo Size
                                             </label>
                                             <input
@@ -438,7 +439,7 @@ const QRGenerator = () => {
                                                 onChange={(e) => setLogoSize(parseInt(e.target.value))}
                                                 className="w-full accent-primary-600"
                                             />
-                                            <div className="flex justify-between text-xs text-secondary-500 dark:text-secondary-400 mt-1">
+                                            <div className="flex justify-between mt-1 text-xs text-secondary-500 dark:text-secondary-400">
                                                 <span>Small</span>
                                                 <span className="font-medium">{logoSize}%</span>
                                                 <span>Large</span>
@@ -466,11 +467,11 @@ const QRGenerator = () => {
                         <button
                             onClick={generateQR}
                             disabled={isGenerating}
-                            className="w-full btn-primary text-lg py-4 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex items-center justify-center w-full py-4 text-lg btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isGenerating ? (
                                 <>
-                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <svg className="w-5 h-5 mr-3 -ml-1 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
@@ -488,7 +489,7 @@ const QRGenerator = () => {
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
-                                className="p-3 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg"
+                                className="p-3 text-red-700 bg-red-100 rounded-lg dark:bg-red-900/30 dark:text-red-400"
                             >
                                 {error}
                             </motion.p>
@@ -498,7 +499,7 @@ const QRGenerator = () => {
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
-                                className="p-3 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-lg"
+                                className="p-3 text-green-700 bg-green-100 rounded-lg dark:bg-green-900/30 dark:text-green-400"
                             >
                                 {success}
                             </motion.p>
@@ -508,14 +509,14 @@ const QRGenerator = () => {
 
                 <div className="lg:col-span-1">
                     <div className="sticky top-6">
-                        <div className="bg-gradient-to-br from-secondary-50 to-primary-50 dark:from-secondary-700 dark:to-secondary-800 p-8 rounded-2xl shadow-inner border border-secondary-100 dark:border-secondary-600">
-                            <h3 className="text-xl font-bold text-secondary-800 dark:text-white mb-6 text-center">QR Code Preview</h3>
+                        <div className="p-8 border shadow-inner bg-gradient-to-br from-secondary-50 to-primary-50 dark:from-secondary-700 dark:to-secondary-800 rounded-2xl border-secondary-100 dark:border-secondary-600">
+                            <h3 className="mb-6 text-xl font-bold text-center text-secondary-800 dark:text-white">QR Code Preview</h3>
 
                             {inputText ? (
                                 <div className="flex flex-col items-center">
                                     <div
                                         ref={qrRef}
-                                        className="p-4 rounded-lg border dark:border-gray-600 flex justify-center items-center mb-4"
+                                        className="flex items-center justify-center p-4 mb-4 border rounded-lg dark:border-gray-600"
                                         style={{
                                             backgroundColor: qrOptions.bgColor,
                                             width: '200px',  // Fixed width for container
@@ -557,7 +558,7 @@ const QRGenerator = () => {
                                                     whileTap={{ scale: 0.95 }}
                                                     onClick={() => downloadQR(format)}
                                                     disabled={isDownloading}
-                                                    className="flex items-center dark:text-white justify-center bg-gray-100 dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500 py-2 rounded-lg text-sm font-medium"
+                                                    className="flex items-center justify-center py-2 text-sm font-medium bg-gray-100 rounded-lg dark:text-white dark:bg-gray-600 hover:bg-gray-200 dark:hover:bg-gray-500"
                                                 >
                                                     <FiDownload className="mr-1" />
                                                     {format.toUpperCase()}
@@ -569,7 +570,7 @@ const QRGenerator = () => {
                                             whileHover={{ y: -2 }}
                                             whileTap={{ scale: 0.95 }}
                                             onClick={saveQR}
-                                            className="w-full bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white py-2 rounded-lg shadow-md transition-all flex items-center justify-center"
+                                            className="flex items-center justify-center w-full py-2 text-white transition-all rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600"
                                         >
                                             <FiSave className="mr-2" />
                                             Save QR Code
@@ -577,9 +578,9 @@ const QRGenerator = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <div className="flex items-center justify-center h-64 bg-white dark:bg-gray-800 rounded-lg border-2 border-dashed dark:border-gray-600">
-                                    <div className="text-center p-4">
-                                        <FiImage className="mx-auto h-12 w-12 text-gray-400" />
+                                <div className="flex items-center justify-center h-64 bg-white border-2 border-dashed rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                                    <div className="p-4 text-center">
+                                        <FiImage className="w-12 h-12 mx-auto text-gray-400" />
                                         <h4 className="mt-2 text-sm font-medium text-gray-700 dark:text-gray-300">
                                             No QR Code Generated
                                         </h4>
@@ -594,6 +595,7 @@ const QRGenerator = () => {
                 </div>
             </div>
         </motion.div>
+        </div>
     );
 };
 
